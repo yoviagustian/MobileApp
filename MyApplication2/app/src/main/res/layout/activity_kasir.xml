@@ -70,7 +70,7 @@
         app:layout_constraintBottom_toTopOf="@+id/et_bil2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/serachButton" />
+        app:layout_constraintTop_toBottomOf="@+id/searchButton" />
 
     <EditText
         android:id="@+id/tv_hasil"
@@ -97,7 +97,7 @@
         android:background="#33F6FBFB"
         android:ems="10"
         android:inputType="textLongMessage"
-        app:layout_constraintEnd_toStartOf="@+id/serachButton"
+        app:layout_constraintEnd_toStartOf="@+id/searchButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/c1" />
 
@@ -117,7 +117,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/serachButton"
+        android:id="@+id/searchButton"
         android:layout_width="54dp"
         android:layout_height="53dp"
         android:layout_marginTop="114dp"

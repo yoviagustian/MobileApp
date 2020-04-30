@@ -20,7 +20,7 @@
         android:text="Input Item"
         android:textColor="#BCBCBC"
         android:textSize="36sp"
-        app:layout_constraintBottom_toTopOf="@+id/et_search"
+        app:layout_constraintBottom_toTopOf="@+id/et_kode"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -37,7 +37,7 @@
         android:text="Harga Jual :"
         android:textColor="#D1D0D0"
         android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@+id/et_search3"
+        app:layout_constraintEnd_toStartOf="@+id/et_hargaJual"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/c3" />
 
@@ -53,7 +53,7 @@
         android:text="Harga Modal :"
         android:textColor="#D1D0D0"
         android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@+id/et_search2"
+        app:layout_constraintEnd_toStartOf="@+id/et_hargaModal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/c2" />
 
@@ -69,7 +69,7 @@
         android:text="Nama Item :"
         android:textColor="#D1D0D0"
         android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@+id/et_search1"
+        app:layout_constraintEnd_toStartOf="@+id/et_nama"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/c1" />
 
@@ -85,7 +85,7 @@
         android:text="Stock :"
         android:textColor="#D1D0D0"
         android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@+id/et_search4"
+        app:layout_constraintEnd_toStartOf="@+id/et_stock"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/c4" />
 
@@ -101,7 +101,7 @@
         android:text="Min Stock :"
         android:textColor="#D1D0D0"
         android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@+id/et_search5"
+        app:layout_constraintEnd_toStartOf="@+id/et_minStock"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/c5" />
 
@@ -109,20 +109,21 @@
         android:id="@+id/c7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="7dp"
-        android:layout_marginLeft="7dp"
-        android:layout_marginTop="62dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="44dp"
         android:layout_marginEnd="20dp"
         android:layout_marginRight="20dp"
         android:text="Keterangan :"
         android:textColor="#D1D0D0"
         android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@+id/et_search6"
+        app:layout_constraintEnd_toStartOf="@+id/et_keterangan"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/c6" />
 
     <EditText
-        android:id="@+id/et_search3"
+        android:id="@+id/et_hargaJual"
         android:layout_width="226dp"
         android:layout_height="34dp"
         android:layout_marginTop="3dp"
@@ -132,10 +133,10 @@
         android:ems="10"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_search2" />
+        app:layout_constraintTop_toBottomOf="@+id/et_hargaModal" />
 
     <EditText
-        android:id="@+id/et_search5"
+        android:id="@+id/et_minStock"
         android:layout_width="226dp"
         android:layout_height="35dp"
         android:layout_marginTop="4dp"
@@ -145,23 +146,23 @@
         android:ems="10"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_search4" />
+        app:layout_constraintTop_toBottomOf="@+id/et_stock" />
 
     <EditText
-        android:id="@+id/et_search6"
+        android:id="@+id/et_keterangan"
         android:layout_width="226dp"
         android:layout_height="119dp"
-        android:layout_marginTop="11dp"
-        android:layout_marginEnd="17dp"
-        android:layout_marginRight="17dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:background="#4C4C4C"
         android:ems="10"
-        android:inputType="number"
+        android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_search5" />
+        app:layout_constraintTop_toBottomOf="@+id/et_minStock" />
 
     <EditText
-        android:id="@+id/et_search4"
+        android:id="@+id/et_stock"
         android:layout_width="226dp"
         android:layout_height="37dp"
         android:layout_marginTop="4dp"
@@ -171,10 +172,10 @@
         android:ems="10"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_search3" />
+        app:layout_constraintTop_toBottomOf="@+id/et_hargaJual" />
 
     <EditText
-        android:id="@+id/et_search2"
+        android:id="@+id/et_hargaModal"
         android:layout_width="226dp"
         android:layout_height="37dp"
         android:layout_marginTop="3dp"
@@ -184,10 +185,10 @@
         android:ems="10"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_search1" />
+        app:layout_constraintTop_toBottomOf="@+id/et_nama" />
 
     <EditText
-        android:id="@+id/et_search"
+        android:id="@+id/et_kode"
         android:layout_width="226dp"
         android:layout_height="33dp"
         android:layout_marginTop="41dp"
@@ -195,12 +196,12 @@
         android:layout_marginRight="17dp"
         android:background="#4C4C4C"
         android:ems="10"
-        android:inputType="number"
+        android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title" />
 
     <EditText
-        android:id="@+id/et_search1"
+        android:id="@+id/et_nama"
         android:layout_width="226dp"
         android:layout_height="32dp"
         android:layout_marginTop="3dp"
@@ -208,23 +209,23 @@
         android:layout_marginRight="17dp"
         android:background="#4C4C4C"
         android:ems="10"
-        android:inputType="number"
+        android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_search" />
+        app:layout_constraintTop_toBottomOf="@+id/et_kode" />
 
     <TextView
         android:id="@+id/c1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="7dp"
-        android:layout_marginLeft="7dp"
-        android:layout_marginTop="139dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="136dp"
+        android:layout_marginEnd="55dp"
+        android:layout_marginRight="55dp"
         android:text="Kode Item :"
         android:textColor="#D1D0D0"
         android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@+id/et_search"
+        app:layout_constraintEnd_toStartOf="@+id/et_kode"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -234,15 +235,16 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="173dp"
         android:layout_marginLeft="173dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="131dp"
         android:layout_marginEnd="150dp"
         android:layout_marginRight="150dp"
-        android:layout_marginBottom="41dp"
-        android:onClick="hitung"
+        android:layout_marginBottom="76dp"
+        android:onClick="tambah"
         android:text="Tambah"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_search6" />
+        app:layout_constraintTop_toBottomOf="@+id/et_keterangan" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

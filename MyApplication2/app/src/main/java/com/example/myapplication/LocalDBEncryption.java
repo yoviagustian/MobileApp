@@ -8,8 +8,10 @@ import net.sqlcipher.database.SQLiteDatabase;
 import net.sqlcipher.database.SQLiteFullException;
 
 import java.io.File;
+import java.io.Serializable;
 import java.security.MessageDigest;
 import java.util.ArrayList;
+import java.util.List;
 
 public class LocalDBEncryption {
 
@@ -102,47 +104,109 @@ public class LocalDBEncryption {
         return false;
     }
 
-    public String readData(String kodeItem)
+    public class item implements Serializable {
+        Integer _id;
+        String _kode;
+        String _nama;
+        String _keterangan;
+        Integer _hargaModal;
+        Integer _hargaJual;
+        Integer _stock;
+        Integer _minStock;
+        public item(Integer id, String kode, String nama, String keterangan, Integer hargaModal, Integer hargaJual, Integer stock, Integer minStock){
+            _id = id;
+            _kode = kode;
+            _nama = nama;
+            _keterangan = keterangan;
+            _hargaModal = hargaModal;
+            _hargaJual = hargaJual;
+            _stock = stock;
+            _minStock = minStock;
+        }
+    }
+
+    public item readData(String id)
     {
-        String  result = null;
-
         try {
-
-            String[] columns = {"namaItem"};
-            String[] whereArgs ={kodeItem};
-            Cursor cursor = database.query(TABLE_NAME,columns,  "kodeItem = ?",
-                    whereArgs,null,null,null);
-
+            String[] whereArgs ={id};
+            Cursor cursor = database.rawQuery("SELECT * FROM item WHERE id = ?", whereArgs);
             cursor.moveToFirst();
-            result = cursor.getString(cursor.getColumnIndex("namaItem"));
 
+            Integer ids = cursor.getInt(cursor.getColumnIndex("id"));
+            String kode = cursor.getString(cursor.getColumnIndex("kodeItem"));
+            String nama = cursor.getString(cursor.getColumnIndex("namaItem"));
+            String keterangan = cursor.getString(cursor.getColumnIndex("keterangan"));
+            Integer hargaModal = cursor.getInt(cursor.getColumnIndex("hargaModal"));
+            Integer hargaJual = cursor.getInt(cursor.getColumnIndex("hargaJual"));
+            Integer stock = cursor.getInt(cursor.getColumnIndex("stock"));
+            Integer minStock = cursor.getInt(cursor.getColumnIndex("minStock"));
 
+            item itm = new item(ids, kode, nama, keterangan, hargaModal, hargaJual, stock, minStock);
+            return itm;
+        }catch (SQLiteFullException e) {
+            return null;
+        }
+    }
+
+    public List<item> readAllData()
+    {
+        List<item> result = new ArrayList<>();
+        try {
+            Cursor cursor = database.rawQuery("select * from "+TABLE_NAME, null);
+            while(cursor.moveToNext())
+            {
+                Integer id = cursor.getInt(cursor.getColumnIndex("id"));
+                String kode = cursor.getString(cursor.getColumnIndex("kodeItem"));
+                String nama = cursor.getString(cursor.getColumnIndex("namaItem"));
+                String keterangan = cursor.getString(cursor.getColumnIndex("keterangan"));
+                Integer hargaModal = cursor.getInt(cursor.getColumnIndex("hargaModal"));
+                Integer hargaJual = cursor.getInt(cursor.getColumnIndex("hargaJual"));
+                Integer stock = cursor.getInt(cursor.getColumnIndex("stock"));
+                Integer minStock = cursor.getInt(cursor.getColumnIndex("minStock"));
+
+                item itm = new item(id, kode, nama, keterangan, hargaModal, hargaJual, stock, minStock);
+                result.add(itm);
+            }
         }catch (SQLiteFullException e){
-            //Log.d("SQLiteStatus", "ERROR : " + e);
             return null;
         }
         return result;
     }
 
-    public ArrayList<String> readAllData()
+    public boolean updateData(String id, String kode, String nama, String keterangan, Integer hargaModal, Integer hargaJual, Integer stock, Integer minStock)
     {
-
-        ArrayList<String> result =new ArrayList<>();
-
         try {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("kodeItem", kode);
+            contentValues.put("namaItem", nama);
+            contentValues.put("keterangan", keterangan);
+            contentValues.put("hargaModal", hargaModal);
+            contentValues.put("hargaJual", hargaJual);
+            contentValues.put("stock", stock);
+            contentValues.put("minStock", minStock);
+            long cek = database.update(TABLE_NAME,contentValues,"id="+id, null);
+//            Log.d("SQLiteStatus","INSERT : " + id);
+            if(cek > 0){return true;}
 
-            String[] columns = {"namaItem"};
-            Cursor cursor = database.rawQuery("select * from "+TABLE_NAME, null);
-
-            while(cursor.moveToNext())
-            {
-                result.add(cursor.getString(cursor.getColumnIndex("namaItem")));
-            }
-
-        }catch (SQLiteFullException e){
-            return null;
+        }catch (Exception e){
+//            Log.d("SQLiteStatus", "ERROR : " + e);
+            return false;
         }
-        return result;
+        return false;
+    }
+
+    public boolean deleteData(String id)
+    {
+        try {
+            long cek = database.delete(TABLE_NAME,"id="+id, null);
+//            Log.d("SQLiteStatus","INSERT : " + id);
+            if(cek > 0){return true;}
+
+        }catch (Exception e){
+//            Log.d("SQLiteStatus", "ERROR : " + e);
+            return false;
+        }
+        return false;
     }
 
 }

@@ -36,7 +36,7 @@
         android:layout_marginRight="163dp"
         android:layout_marginBottom="144dp"
         android:onClick="toKasir"
-        android:text="kasir"
+        android:text="Cashier"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -13,6 +13,7 @@
             android:name=".Warehouse"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".TambahItem" />
+        <activity android:name=".UpdateItem" />
         <activity android:name=".Kasir" />
         <activity android:name=".MainActivity">
             <intent-filter>

@@ -21,6 +21,7 @@ public class LocalDBEncryption {
     //private static Map<String, String> tempData = new HashMap<String, String>();
     private static final String DATABASE_NAME = "testing";    // Database Name
     private static final String TABLE_NAME = "item";   // Table Name
+    private static final String TABLE_NAME1 = "history";   // Table Name
 
     private static final String CREATE_TABLE = "CREATE TABLE  " + TABLE_NAME +
             "(id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -31,6 +32,14 @@ public class LocalDBEncryption {
             "hargaJual   INTEGER ," +
             "stock       INTEGER ," +
             "minStock    INTEGER );";
+
+    private static final String CREATE_TABLE1 = "CREATE TABLE  " + TABLE_NAME1 +
+            "(id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            "kodeItem    VARCHAR(255) ," +
+            "namaItem    VARCHAR(225) ," +
+            "hargaModal  INTEGER ," +
+            "hargaJual   INTEGER ," +
+            "jumlah       INTEGER );";
 
     //private static final String DROP_TABLE ="DROP TABLE IF EXISTS "+TABLE_NAME;
     public LocalDBEncryption(Context context){
@@ -48,6 +57,7 @@ public class LocalDBEncryption {
             databaseFile.delete();
             database = SQLiteDatabase.openOrCreateDatabase(databaseFile, GetKeyPass(), null);
             database.execSQL(CREATE_TABLE);
+            database.execSQL(CREATE_TABLE1);
 
             //Log.d("SQLiteStatus", "Creating");
         }else{
@@ -104,6 +114,26 @@ public class LocalDBEncryption {
         return false;
     }
 
+    public boolean createHistory(String kode, String nama, Integer hargaModal, Integer hargaJual, Integer jumlah)
+    {
+        try {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("kodeItem", kode);
+            contentValues.put("namaItem", nama);
+            contentValues.put("hargaModal", hargaModal);
+            contentValues.put("hargaJual", hargaJual);
+            contentValues.put("jumlah", jumlah);
+            long id = database.insert(TABLE_NAME1, null , contentValues);
+//            Log.d("SQLiteStatus","INSERT : " + id);
+            if(id > 0){return true;}
+
+        }catch (Exception e){
+//            Log.d("SQLiteStatus", "ERROR : " + e);
+            return false;
+        }
+        return false;
+    }
+
     public class item implements Serializable {
         Integer _id;
         String _kode;
@@ -122,6 +152,23 @@ public class LocalDBEncryption {
             _hargaJual = hargaJual;
             _stock = stock;
             _minStock = minStock;
+        }
+    }
+
+    public class history implements Serializable {
+        Integer _id;
+        String _kode;
+        String _nama;
+        Integer _hargaModal;
+        Integer _hargaJual;
+        Integer _jumlah;
+        public history(Integer id, String kode, String nama, Integer hargaModal, Integer hargaJual, Integer jumlah){
+            _id = id;
+            _kode = kode;
+            _nama = nama;
+            _hargaModal = hargaModal;
+            _hargaJual = hargaJual;
+            _jumlah = jumlah;
         }
     }
 
@@ -165,6 +212,29 @@ public class LocalDBEncryption {
                 Integer minStock = cursor.getInt(cursor.getColumnIndex("minStock"));
 
                 item itm = new item(id, kode, nama, keterangan, hargaModal, hargaJual, stock, minStock);
+                result.add(itm);
+            }
+        }catch (SQLiteFullException e){
+            return null;
+        }
+        return result;
+    }
+
+    public List<history> readAllHistory()
+    {
+        List<history> result = new ArrayList<>();
+        try {
+            Cursor cursor = database.rawQuery("select * from "+TABLE_NAME1, null);
+            while(cursor.moveToNext())
+            {
+                Integer id = cursor.getInt(cursor.getColumnIndex("id"));
+                String kode = cursor.getString(cursor.getColumnIndex("kodeItem"));
+                String nama = cursor.getString(cursor.getColumnIndex("namaItem"));
+                Integer hargaModal = cursor.getInt(cursor.getColumnIndex("hargaModal"));
+                Integer hargaJual = cursor.getInt(cursor.getColumnIndex("hargaJual"));
+                Integer jumlah = cursor.getInt(cursor.getColumnIndex("jumlah"));
+
+                history itm = new history(id, kode, nama, hargaModal, hargaJual, jumlah);
                 result.add(itm);
             }
         }catch (SQLiteFullException e){

@@ -28,4 +28,10 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, Kasir.class);
         startActivity(intent);
     }
+
+    public void toHistory(View view)
+    {
+        Intent intent = new Intent(this, History.class);
+        startActivity(intent);
+    }
 }

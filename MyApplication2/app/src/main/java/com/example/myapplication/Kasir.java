@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -8,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,6 +24,7 @@ public class Kasir extends AppCompatActivity {
     List<LocalDBEncryption.item> items;
     TextView tv_hasil;
 
+    ArrayList<LocalDBEncryption.item> arrayList = new ArrayList<>();
     ArrayList<LocalDBEncryption.item> arrayList1 = new ArrayList<>();
 
     @Override
@@ -33,8 +36,6 @@ public class Kasir extends AppCompatActivity {
         et_search = findViewById(R.id.et_search);
         ListView listView=(ListView)findViewById(R.id.listview);
         ListView listView1= (ListView)findViewById(R.id.listview1);
-
-        ArrayList<LocalDBEncryption.item> arrayList = new ArrayList<>();
 
         items = myDBCONN.readAllData();
         for(int i=0; i<items.size(); i++)
@@ -89,9 +90,29 @@ public class Kasir extends AppCompatActivity {
         tv_hasil = findViewById(R.id.tv_hasil);
     }
 
+    public void cek(String kode)
+    {
+        ArrayList<LocalDBEncryption.item> alls = adapter.getAll();
+        for(int i=0; i<alls.size(); i++)
+        {
+            LocalDBEncryption.item itm = alls.get(i);
+            if(itm._kode == kode)
+            {
+                itm._stock += 1;
+                adapter.setStock(i, itm);
+                break;
+            }
+        }
+
+        adapter.notifyDataSetChanged();
+    }
+
     public void kurangi(int i)
     {
         sm = sm - adapter1.getJual(i);
+        LocalDBEncryption.item itm = adapter1.getItem(i);
+        cek(itm._kode);
+
         adapter1.remove(adapter1.getItem(i));
         adapter1.notifyDataSetChanged();
 
@@ -100,11 +121,23 @@ public class Kasir extends AppCompatActivity {
 
     public void tambahi(int i)
     {
-        adapter1.add(adapter.getItem(i));
-        adapter1.notifyDataSetChanged();
+        LocalDBEncryption.item itm = adapter.getItem(i);
+        if(itm._stock > itm._minStock)
+        {
+            itm._stock -= 1;
+            adapter.setStock(i, itm);
+            adapter.notifyDataSetChanged();
 
-        sm = sm + adapter.getJual(i);
-        tv_hasil.setText(String.valueOf(sm));
+            adapter1.add(itm);
+            adapter1.notifyDataSetChanged();
+
+            sm = sm + adapter.getJual(i);
+            tv_hasil.setText(String.valueOf(sm));
+        }
+        else
+        {
+            Toast.makeText(Kasir.this,"Stock Kurang", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void resetList(View view)
@@ -114,5 +147,25 @@ public class Kasir extends AppCompatActivity {
 
         sm = 0;
         tv_hasil.setText(String.valueOf(sm));
+    }
+
+    public void ok(View view)
+    {
+        List<LocalDBEncryption.item> alls;
+        alls = myDBCONN.readAllData();
+        for(int i=0; i<alls.size(); i++)
+        {
+            LocalDBEncryption.item itm1 = alls.get(i);
+            LocalDBEncryption.item itm2 = adapter.getItem(i);
+
+            if( itm1._stock - itm2._stock != 0 )
+            {
+                myDBCONN.createHistory(itm1._kode, itm1._nama, itm1._hargaModal, itm1._hargaJual, itm1._stock - itm2._stock);
+                myDBCONN.updateData(String.valueOf(itm2._id), itm2._kode, itm2._nama, itm2._keterangan, itm2._hargaModal, itm2._hargaJual, itm2._stock, itm2._minStock);
+            }
+        }
+
+        Intent intent = new Intent(this, History.class);
+        startActivity(intent);
     }
 }

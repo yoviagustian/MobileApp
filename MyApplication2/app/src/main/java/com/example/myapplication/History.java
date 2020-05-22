@@ -1,7 +1,6 @@
 package com.example.myapplication;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -23,20 +22,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Warehouse extends AppCompatActivity {
-    itemAdapter adapter;
+public class History extends AppCompatActivity {
+    historyAdapter adapter;
     EditText et_search;
     LocalDBEncryption myDBCONN;
-    List<LocalDBEncryption.item> items;
+    List<LocalDBEncryption.history> items;
 
-    public static class itemAdapter extends ArrayAdapter<LocalDBEncryption.item> implements Filterable {
+    public static class historyAdapter extends ArrayAdapter<LocalDBEncryption.history> implements Filterable {
 
         public Context mContext;
-        SearchFilters filter;
-        ArrayList<LocalDBEncryption.item> filteredList;
-        public ArrayList<LocalDBEncryption.item> itemList = new ArrayList<>();
+        SearchFiltersHistory filter;
+        ArrayList<LocalDBEncryption.history> filteredList;
+        public ArrayList<LocalDBEncryption.history> itemList = new ArrayList<>();
 
-        public itemAdapter(@NonNull Context context, ArrayList<LocalDBEncryption.item> list) {
+        public historyAdapter(@NonNull Context context, ArrayList<LocalDBEncryption.history> list) {
             super(context, 0 , list);
             mContext = context;
             itemList = list;
@@ -49,7 +48,7 @@ public class Warehouse extends AppCompatActivity {
         }
 
         @Override
-        public LocalDBEncryption.item getItem(int position) {
+        public LocalDBEncryption.history getItem(int position) {
             return itemList.get(position);
         }
 
@@ -66,22 +65,6 @@ public class Warehouse extends AppCompatActivity {
             return itemList.get(position)._hargaJual;
         }
 
-        public int setStock(int position, LocalDBEncryption.item itm) {
-            itemList.set(position, itm);
-            return 1;
-        }
-
-        public ArrayList<LocalDBEncryption.item> getAll() {
-            return itemList;
-        }
-
-        public int setList(ArrayList<LocalDBEncryption.item> ls) {
-            itemList.clear();
-            itemList.addAll(ls);
-
-            return 1;
-        }
-
         @NonNull
         @Override
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -90,13 +73,13 @@ public class Warehouse extends AppCompatActivity {
                 listItem = LayoutInflater.from(mContext)
                         .inflate(R.layout.activity_list,parent,false);
 
-            LocalDBEncryption.item currentitem = itemList.get(position);
+            LocalDBEncryption.history currentitem = itemList.get(position);
 
             TextView name = (TextView) listItem.findViewById(R.id.textView_name);
             name.setText(currentitem._nama);
 
             TextView stock = (TextView) listItem.findViewById(R.id.textView_stock);
-            stock.setText(String.valueOf(currentitem._stock));
+            stock.setText(String.valueOf(currentitem._jumlah));
 
             return listItem;
         }
@@ -106,7 +89,7 @@ public class Warehouse extends AppCompatActivity {
 
             if(filter == null) {
 
-                filter = new SearchFilters(filteredList, this);
+                filter = new SearchFiltersHistory(filteredList, this);
             }
 
             return filter;
@@ -120,21 +103,21 @@ public class Warehouse extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_warehouse);
+        setContentView(R.layout.activity_history);
         myDBCONN = new LocalDBEncryption(this);
 
         et_search = findViewById(R.id.et_search);
         ListView listView=(ListView)findViewById(R.id.listview);
 
-        ArrayList<LocalDBEncryption.item> arrayList = new ArrayList<>();
-        items = myDBCONN.readAllData();
+        ArrayList<LocalDBEncryption.history> arrayList = new ArrayList<>();
+        items = myDBCONN.readAllHistory();
         for(int i=0; i<items.size(); i++)
         {
             arrayList.add(items.get(i));
         }
 
         //Create Adapter
-        adapter = new itemAdapter(this, arrayList);
+        adapter = new historyAdapter(this, arrayList);
 
         //assign adapter to listview
         listView.setAdapter(adapter);
@@ -146,7 +129,7 @@ public class Warehouse extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                (Warehouse.this).adapter.getFilter().filter(s);
+                (History.this).adapter.getFilter().filter(s);
             }
 
             @Override
@@ -158,20 +141,7 @@ public class Warehouse extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Integer position = adapter.getSelectedItemPosition(i);
-//                Toast.makeText(Warehouse.this,"clicked item:"+position+" ",Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(Warehouse.this, UpdateItem.class);
-
-                intent.putExtra("id", String.valueOf(position));
-
-                startActivity(intent);
             }
         });
-    }
-
-    public void tambahItem(View view)
-    {
-        Intent intent = new Intent(this, TambahItem.class);
-        startActivity(intent);
     }
 }

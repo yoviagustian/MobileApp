@@ -15,6 +15,7 @@
         <activity android:name=".TambahItem" />
         <activity android:name=".UpdateItem" />
         <activity android:name=".Kasir" />
+        <activity android:name=".History" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
